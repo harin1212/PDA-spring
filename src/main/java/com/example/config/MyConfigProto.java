@@ -1,10 +1,12 @@
 package com.example.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyConfig {
+@Scope("prototype")
+public class MyConfigProto {
     @Bean
-    public void config(){}
+    public void configProto(){}
 }
