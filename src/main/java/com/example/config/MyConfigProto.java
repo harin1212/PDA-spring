@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope("prototype")
+@Scope("prototype") //실무에서 잘 사용 안함
 public class MyConfigProto {
     @Bean
     public void configProto(){}

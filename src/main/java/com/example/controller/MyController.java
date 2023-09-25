@@ -10,6 +10,7 @@ public class MyController {
     private final MyService myService;
     private final MyConfig myConfig;
 
+    //생성자 주입
     @Autowired
     public MyController(MyService myService, MyConfig myConfig){
         this.myService = myService;
