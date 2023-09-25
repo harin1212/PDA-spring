@@ -3,7 +3,6 @@ package com.example.domain.response;
 import com.example.domain.entity.Movie;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Builder
 @Getter

@@ -25,7 +25,11 @@ public class MovieService {
 
     public List<MovieResponse> getMovies() {
         return movies.stream().map(movie -> MovieResponse.of(movie)).toList();
-        /**
+        //movies에서 스트림 생성 -> 스트림 api 사용하여 데이터 처리 위한 시작단계
+        //map -> Movie 객체가 Movie.Response 객체로 매핑됨
+        //.toList() -> map 연산 후에 생성된 MovieResponse 객체들을 리스트로 수집
+
+        /*
         return movies.stream().map(movie ->
                 MovieResponse.builder()
                         .id(movie.getId())
@@ -33,17 +37,14 @@ public class MovieService {
                         .productionYear(movie.getProductionYear())
                         .build()
         ).toList();
-         **/
+         */
     };
 
-    public Movie getMovie(long movieId){
+    public Movie getMovie(long movieId) {
         return movies.stream()
                 .filter(movie -> movie.getId() == movieId)
-                .toList()
-                .stream()
                 .findFirst()
-                .orElseThrow(); //Throw : no search exception 발생시킴
-
+                .orElseThrow();
     }
 
     public void createMovie(MovieRequest movieRequest) {
