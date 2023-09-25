@@ -1,12 +1,18 @@
 package com.example.controller;
 
-import com.example.domain.Movie;
+import com.example.common.Response;
+import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
+import com.example.domain.response.MovieResponse;
 import com.example.service.MovieService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name="무비 컨트롤러다")
 @RestController //컨트롤러임을 인식하게 해줌
@@ -15,9 +21,10 @@ import java.util.List;
 
 public class MovieController {
     private final MovieService movieService; //주입받기
+
     @GetMapping(value = "/v1/movies")
-    public List<Movie> getMovies(){
-        return movieService.getMovies();
+    public Response<List<MovieResponse>> getMovies(){
+        return Response.of(movieService.getMovies());
     }
     
     @GetMapping("/v1/movies/{movieId}")
