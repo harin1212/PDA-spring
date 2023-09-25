@@ -38,15 +38,17 @@ public class MovieController {
 
     @PutMapping("/v1/movies/{movieId}")
     public void updateMovie(
-            @PathVariable(value = "movieId") long movieId
+            @PathVariable(value = "movieId") long movieId,
+            @RequestBody MovieRequest movieRequest
     ){
-        movieService.updateMovie(movieId);
+        movieService.updateMovie(movieId, movieRequest);
     }
 
     @DeleteMapping("/v1/movies/{movieId}")
     public void deleteMovie(
-            @PathVariable(value = "movieId") long movieId
+            @PathVariable(value = "movieId") long movieId,
+            @RequestBody MovieRequest movieRequest
     ){
-        movieService.deleteMovie(movieId);
+        movieService.deleteMovie(movieId, movieRequest);
     }
 }

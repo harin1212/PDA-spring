@@ -1,14 +1,16 @@
 package com.example.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
+@AllArgsConstructor //final 없는 애들도 모아서 생성자 만들어줌
 @Getter
 @Setter
 public class Movie {
-    private final long id;
-    private final String name;
-    private final Integer productionYear;
+    private long id;
+    private String name;
+    private Integer productionYear;
 }

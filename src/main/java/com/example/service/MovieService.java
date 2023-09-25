@@ -44,10 +44,15 @@ public class MovieService {
         movies.add(movie); //movie에 할당
     }
 
-    public void updateMovie(long movieId) {
+    public void updateMovie(long movieId, MovieRequest movieRequest) {
+        Movie movie = getMovie(movieId);
+        movie.setName(movieRequest.getName());
+        movie.setProductionYear(movieRequest.getProductionYear());
     }
 
-    public void deleteMovie(long movieId) {
+    public void deleteMovie(long movieId, MovieRequest movieRequest) {
+        Movie movie = getMovie(movieId);
+        movies.remove(movie);
     }
 
 }
