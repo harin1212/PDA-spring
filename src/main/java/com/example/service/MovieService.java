@@ -46,7 +46,10 @@ public class MovieService {
         movie.setName("변경3");
     }
 
-    public void removeMovie(long movieId, MovieRequest movieRequest) {
+    @Transactional
+    public void removeMovie(long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElseThrow();
+        movieRepository.delete(movie);
     }
 
 }

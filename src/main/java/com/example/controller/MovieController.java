@@ -52,10 +52,9 @@ public class MovieController {
 
     @DeleteMapping("/api/v1/movies/{movieId}")
     public void removeMovie(
-            @PathVariable(value = "movieId") long movieId,
-            @RequestBody MovieRequest movieRequest
+            @PathVariable(value = "movieId") long movieId
     ) {
-        movieService.removeMovie(movieId, movieRequest);
+        movieService.removeMovie(movieId);
     }
 
 }
