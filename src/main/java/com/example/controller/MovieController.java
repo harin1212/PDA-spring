@@ -1,58 +1,60 @@
 package com.example.controller;
 
 import com.example.common.Response;
-import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
 import com.example.domain.response.MovieResponse;
 import com.example.service.MovieService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name="무비 컨트롤러다")
-@RestController //컨트롤러임을 인식하게 해줌
-@RequiredArgsConstructor //생성자로 autowired
-@RequestMapping("/api")
-
+@RestController
+@RequiredArgsConstructor
 public class MovieController {
-    private final MovieService movieService; //주입받기
+    private final MovieService movieService;
 
-    @GetMapping( "/v1/movies")
-    public Response<List<MovieResponse>> getMovies(){
+    @GetMapping("/api/v1/movies")
+    public Response<List<MovieResponse>> getMovies(
+            @RequestParam(value = "overYear", required = false) Integer overYear
+    ) {
         return Response.of(movieService.getMovies());
     }
-    
-    @GetMapping("/v1/movies/{movieId}")
-    public Movie getMovie(
-            //movieId 받기 위해 설정
+
+    @GetMapping("/api/v1/movies/{movieId}")
+    public Response<MovieResponse> getMovie(
             @PathVariable(value = "movieId") long movieId
-    ){
-        return movieService.getMovie(movieId);
+    ) {
+        return Response.of(movieService.getMovie(movieId));
     }
 
-    @PostMapping("/v1/movies")
-    public void createMovie(
-            //객체정보 받기 -> post, put api에서만 사용
-            @RequestBody MovieRequest movieRequest
-            ){
-        movieService.createMovie(movieRequest);
+    @PostMapping("/api/v1/movies")
+    public void saveMovie(
+            @RequestBody MovieRequest movieRequest) {
+        movieService.saveMovie(movieRequest);
     }
 
-    @PutMapping("/v1/movies/{movieId}")
+    @PutMapping("/api/v1/movies/{movieId}")
     public void updateMovie(
             @PathVariable(value = "movieId") long movieId,
             @RequestBody MovieRequest movieRequest
-    ){
+    ) {
         movieService.updateMovie(movieId, movieRequest);
     }
 
-    @DeleteMapping("/v1/movies/{movieId}")
-    public void deleteMovie(
-            @PathVariable(value = "movieId") long movieId,
-            @RequestBody MovieRequest movieRequest
-    ){
-        movieService.deleteMovie(movieId, movieRequest);
+
+    @DeleteMapping("/api/v1/movies/{movieId}")
+    public void removeMovie(
+            @PathVariable(value = "movieId") long movieId
+    ) {
+        movieService.removeMovie(movieId);
     }
+
 }
