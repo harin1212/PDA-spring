@@ -17,6 +17,8 @@ public class Actor {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "movie_id")
-    private Long movieId;
+    //양방향 관계
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
 }

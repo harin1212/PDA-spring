@@ -25,7 +25,7 @@ public class MovieController {
     public Response<List<MovieResponse>> getMovies(
             @RequestParam(value = "overYear", required = false) Integer overYear
     ) {
-        return Response.of(movieService.getMovies(overYear));
+        return Response.of(movieService.getMovies());
     }
 
     @GetMapping("/api/v1/movies/{movieId}")

@@ -10,12 +10,14 @@ public class MovieResponse {
     private final long id;
     private final String name;
     private final Integer productionYear;
+    private final String directorName;
 
-    public static MovieResponse of(Movie movie) {
-        return MovieResponse.builder()
-                .id(movie.getId())
-                .name(movie.getName())
-                .productionYear(movie.getProductionYear())
-                .build();
+    public static MovieResponse of(Movie entity) {
+        return new MovieResponse(
+                entity.getId(),
+                entity.getName(),
+                entity.getProductionYear(),
+                entity.getDirector().getName()
+        );
     }
 }

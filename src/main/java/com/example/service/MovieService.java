@@ -18,13 +18,15 @@ public class MovieService {
     private final LogRepository logRepository;
     private final LogService logService;
 
+    @Transactional
     public MovieResponse getMovie(long movieId) {
         Movie movie = movieRepository.findById(movieId).orElseThrow();
         return MovieResponse.of(movie);
     }
 
-    public List<MovieResponse> getMovies(Integer overYear) {
-        return List.of();
+    public List<MovieResponse> getMovies() {
+        List<Movie> movies = movieRepository.findAll();
+        return movies.stream().map(MovieResponse::of).toList();
     };
 
     @Transactional

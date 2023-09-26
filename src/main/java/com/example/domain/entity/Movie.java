@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="movie")
@@ -26,9 +27,13 @@ public class Movie {
 
     //id가 아닌 객체와의 매핑
     //director movie와 일대일 관계 맺어짐
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "director_id")
     private Director director;
+
+    //actor
+    @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER) //키의 주인, fetch : 기본 LAZY로 되므로 EAGER로 변경
+    private List<Actor> actors;
 
     public Movie(String name, int productionYear){
         this.name = name;
