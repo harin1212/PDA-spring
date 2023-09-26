@@ -35,6 +35,7 @@ public class MovieService {
         Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
         movieRepository.save(movie);
         logService.saveLog();
+        throw new RuntimeException("강제 에러");
     }
 
     public void updateMovie(long movieId, MovieRequest movieRequest) {
