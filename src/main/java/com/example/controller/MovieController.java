@@ -36,7 +36,8 @@ public class MovieController {
     }
 
     @PostMapping("/api/v1/movies")
-    public void saveMovie(@RequestBody MovieRequest movieRequest) {
+    public void saveMovie(
+            @RequestBody MovieRequest movieRequest) {
         movieService.saveMovie(movieRequest);
     }
 

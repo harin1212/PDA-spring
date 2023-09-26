@@ -1,24 +1,27 @@
 package com.example.service;
 
+import com.example.domain.entity.Log;
 import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
 import com.example.domain.response.MovieResponse;
+import com.example.repository.LogRepository;
+import com.example.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MovieService {
-    private final EntityManagerFactory emf;
+    private final MovieRepository movieRepository;
+    private final LogRepository logRepository;
 
     public MovieResponse getMovie(long movieId) {
-        EntityManager entityManager = emf.createEntityManager();
-        Movie movie = entityManager.find(Movie.class, movieId);
+        Movie movie = movieRepository.findById(movieId).orElseThrow();
         return MovieResponse.of(movie);
     }
 
@@ -26,35 +29,19 @@ public class MovieService {
         return List.of();
     };
 
+    @Transactional
     public void saveMovie(MovieRequest movieRequest) {
-        EntityManager entityManager = emf.createEntityManager();
-        EntityTransaction tx = entityManager.getTransaction();
+        Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
+        movieRepository.save(movie);
 
-        try{
-            tx.begin();
-            Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
-            if(movie != null){
-                throw new RuntimeException("강제 오류 처리");
-            }
-
-            entityManager.persist(movie);
-            entityManager.flush();
-
-            tx.commit();
-
-            //throw new RuntimeException("roll back");
-        }catch (Exception e){
-            tx.rollback();
-        }
-
+        Log log = new Log();
+        logRepository.save(log);
     }
 
     public void updateMovie(long movieId, MovieRequest movieRequest) {
-
     }
 
-    public void deleteMovie(long movieId, MovieRequest movieRequest) {
-
+    public void removeMovie(long movieId, MovieRequest movieRequest) {
     }
 
 }
