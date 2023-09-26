@@ -1,19 +1,31 @@
 package com.example.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
-@AllArgsConstructor //final 없는 애들도 모아서 생성자 만들어줌
+@Entity
+@Table(name="movie")
 @Getter
-@Setter
+@NoArgsConstructor
 public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "production_year")
     private Integer productionYear;
-    private LocalDateTime createAt;
+
+    @Column(name = "created_at")
+    private LocalDateTime createAt=LocalDateTime.now();
+
+    public Movie(String name, int productionYear){
+        this.name = name;
+        this.productionYear = productionYear;
+    }
+
 }

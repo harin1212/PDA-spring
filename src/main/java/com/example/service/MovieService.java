@@ -3,69 +3,58 @@ package com.example.service;
 import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
 import com.example.domain.response.MovieResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MovieService {
-    private static List<Movie> movies = new ArrayList<>();
+    private final EntityManagerFactory emf;
 
-    @PostConstruct
-    public void init(){
-        movies.addAll(List.of(
-                new Movie(1, "엘리멘탈",2023, LocalDateTime.now()),
-                new Movie(2, "소울",2020, LocalDateTime.now()),
-                new Movie(3, "엔칸토",1999, LocalDateTime.now())
-        ));
+    public MovieResponse getMovie(long movieId) {
+        EntityManager entityManager = emf.createEntityManager();
+        Movie movie = entityManager.find(Movie.class, movieId);
+        return MovieResponse.of(movie);
     }
 
-    public List<MovieResponse> getMovies() {
-        return movies.stream().map(movie -> MovieResponse.of(movie)).toList();
-        //movies에서 스트림 생성 -> 스트림 api 사용하여 데이터 처리 위한 시작단계
-        //map -> Movie 객체가 Movie.Response 객체로 매핑됨
-        //.toList() -> map 연산 후에 생성된 MovieResponse 객체들을 리스트로 수집
-
-        /*
-        return movies.stream().map(movie ->
-                MovieResponse.builder()
-                        .id(movie.getId())
-                        .name(movie.getName())
-                        .productionYear(movie.getProductionYear())
-                        .build()
-        ).toList();
-         */
+    public List<MovieResponse> getMovies(Integer overYear) {
+        return List.of();
     };
 
-    public Movie getMovie(long movieId) {
-        return movies.stream()
-                .filter(movie -> movie.getId() == movieId)
-                .findFirst()
-                .orElseThrow();
-    }
+    public void saveMovie(MovieRequest movieRequest) {
+        EntityManager entityManager = emf.createEntityManager();
+        EntityTransaction tx = entityManager.getTransaction();
 
-    public void createMovie(MovieRequest movieRequest) {
-        Movie movie = new Movie(
-                movies.size() +1 , //마지막
-                movieRequest.getName(),
-                movieRequest.getProductionYear(),
-                LocalDateTime.now()
-        );
-        movies.add(movie); //movie에 할당
+        try{
+            tx.begin();
+            Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
+            if(movie != null){
+                throw new RuntimeException("강제 오류 처리");
+            }
+
+            entityManager.persist(movie);
+            entityManager.flush();
+
+            tx.commit();
+
+            //throw new RuntimeException("roll back");
+        }catch (Exception e){
+            tx.rollback();
+        }
+
     }
 
     public void updateMovie(long movieId, MovieRequest movieRequest) {
-        Movie movie = getMovie(movieId);
-        movie.setName(movieRequest.getName());
-        movie.setProductionYear(movieRequest.getProductionYear());
+
     }
 
     public void deleteMovie(long movieId, MovieRequest movieRequest) {
-        Movie movie = getMovie(movieId);
-        movies.remove(movie);
+
     }
 
 }
