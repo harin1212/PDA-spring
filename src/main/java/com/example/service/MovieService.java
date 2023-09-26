@@ -25,19 +25,14 @@ public class MovieService {
     }
 
     public List<MovieResponse> getMovies() {
-        List<Movie> movies = movieRepository.findAll();
+        List<Movie> movies = movieRepository.findByProductionYear(2020);
         return movies.stream().map(MovieResponse::of).toList();
     };
 
     @Transactional
     public void saveMovie(MovieRequest movieRequest) {
         Movie movie1 = new Movie(movieRequest.getName() + "1", movieRequest.getProductionYear());
-        Movie movie2 = new Movie(movieRequest.getName()+ "2", movieRequest.getProductionYear());
-        Movie movie3 = new Movie(movieRequest.getName()+ "3", movieRequest.getProductionYear());
-
         movieRepository.save(movie1);
-        movieRepository.save(movie2);
-        movieRepository.save(movie3);
         logService.saveLog();
     }
 
