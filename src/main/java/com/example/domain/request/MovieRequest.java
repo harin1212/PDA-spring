@@ -1,13 +1,13 @@
 package com.example.domain.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor  // 디폴트 생성자 추가
 public class MovieRequest {
-    private final String name;
-    private final Integer productionYear;
+    private String name;
+    private Integer productionYear;
 }

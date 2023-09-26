@@ -19,6 +19,7 @@ import java.util.List;
 public class MovieService {
     private final MovieRepository movieRepository;
     private final LogRepository logRepository;
+    private final LogService logService;
 
     public MovieResponse getMovie(long movieId) {
         Movie movie = movieRepository.findById(movieId).orElseThrow();
@@ -33,9 +34,7 @@ public class MovieService {
     public void saveMovie(MovieRequest movieRequest) {
         Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
         movieRepository.save(movie);
-
-        Log log = new Log();
-        logRepository.save(log);
+        logService.saveLog();
     }
 
     public void updateMovie(long movieId, MovieRequest movieRequest) {
