@@ -1,6 +1,5 @@
 package com.example.service;
 
-import com.example.domain.entity.Log;
 import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
 import com.example.domain.response.MovieResponse;
@@ -10,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @Service
@@ -32,13 +29,24 @@ public class MovieService {
 
     @Transactional
     public void saveMovie(MovieRequest movieRequest) {
-        Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
-        movieRepository.save(movie);
+        Movie movie1 = new Movie(movieRequest.getName() + "1", movieRequest.getProductionYear());
+        Movie movie2 = new Movie(movieRequest.getName()+ "2", movieRequest.getProductionYear());
+        Movie movie3 = new Movie(movieRequest.getName()+ "3", movieRequest.getProductionYear());
+
+        movieRepository.save(movie1);
+        movieRepository.save(movie2);
+        movieRepository.save(movie3);
         logService.saveLog();
-        throw new RuntimeException("강제 에러");
     }
 
+    @Transactional
     public void updateMovie(long movieId, MovieRequest movieRequest) {
+        //조회가 되는 순간 write 쿼리가 안먹음
+        Movie movie = movieRepository.findById(movieId).orElseThrow();
+
+        movie.setName("변경1"); //이름 변경 -> dirty checking
+        movie.setName("변경2");
+        movie.setName("변경3");
     }
 
     public void removeMovie(long movieId, MovieRequest movieRequest) {

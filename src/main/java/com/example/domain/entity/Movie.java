@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="movie")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Movie {
     @Id
@@ -22,6 +23,12 @@ public class Movie {
 
     @Column(name = "created_at")
     private LocalDateTime createAt=LocalDateTime.now();
+
+    //id가 아닌 객체와의 매핑
+    //director movie와 일대일 관계 맺어짐
+    @OneToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
 
     public Movie(String name, int productionYear){
         this.name = name;
