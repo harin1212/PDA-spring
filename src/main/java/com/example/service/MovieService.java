@@ -30,8 +30,8 @@ public class MovieService {
 
     @Transactional
     public void saveMovie(MovieRequest movieRequest) {
-        Movie movie1 = new Movie(movieRequest.getName() + "1", movieRequest.getProductionYear());
-        movieRepository.save(movie1);
+        Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
+        movieRepository.save(movie);
         logService.saveLog();
     }
 
