@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @Getter
 public class MovieResponse {
-    private final long id;
+    private final Long id;
     private final String name;
     private final Integer productionYear;
     private final String directorName;
