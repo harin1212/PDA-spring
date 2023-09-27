@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +34,7 @@ public class MovieServiceMockTest {
     private MovieService movieService;
 
     @Test
-    @DisplayName("단건 조회 테스트")
-    public void getMovieTest() {
+    public void 영화단건조회_정상조회_테스트() {
         //given
         int movieId = 1;
         Movie movie = new Movie();
@@ -48,5 +48,21 @@ public class MovieServiceMockTest {
         //then
         MovieResponse result = movieService.getMovie(movieId);
         assertNotNull(result);
+    }
+
+    @Test
+    public void 영화단건조회_불가_테스트() {
+        //given
+        int movieId = 1;
+        Movie movie = new Movie();
+        movie.setName("hi");
+        movie.setDirector(new Director());
+        movie.setActors(List.of(new Actor()));
+
+        //when
+        when(movieRepository.findById(anyLong())).thenReturn(null);
+
+        //then
+        assertThrows(NullPointerException.class, () -> movieService.getMovie(movieId));
     }
 }
