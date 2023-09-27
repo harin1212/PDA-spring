@@ -2,14 +2,21 @@ package com.example.service;
 
 import com.example.domain.entity.User;
 import com.example.domain.request.UserRequest;
+import com.example.domain.response.UserResponse;
 import com.example.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -20,5 +27,21 @@ public class UserService {
                 userRequest.getRole()
         );
         userRepository.save(user);
+    }
+
+/*   private void validateDuplicateUser(User user) {
+        userRepository.findByUsername(user.getUsername())
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                });
+    }*/
+
+    /**
+     * 로그인용 메소드
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        return UserResponse.of(user);
     }
 }
