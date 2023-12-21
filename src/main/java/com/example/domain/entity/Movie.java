@@ -36,7 +36,6 @@ public class Movie {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true //movie 1번 지움 -> actor 1번 매핑 고아가됨 => 모두 삭제해주는 것
-
     )
 
     //actor

@@ -3,7 +3,6 @@ package com.example.service;
 import com.example.domain.entity.Movie;
 import com.example.domain.request.MovieRequest;
 import com.example.domain.response.MovieResponse;
-import com.example.repository.LogRepository;
 import com.example.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MovieService {
+    //주입 객체
     private final MovieRepository movieRepository;
-    private final LogRepository logRepository;
     private final LogService logService;
 
     @Transactional
     public MovieResponse getMovie(long movieId) {
-        Movie movie = movieRepository.findById(movieId).orElseThrow();
+        Movie movie = movieRepository.findById(movieId).orElseThrow(); //반환값이 null이면 Throw
         return MovieResponse.of(movie);
     }
 
@@ -31,8 +30,8 @@ public class MovieService {
 
     @Transactional
     public void saveMovie(MovieRequest movieRequest) {
-        Movie movie1 = new Movie(movieRequest.getName() + "1", movieRequest.getProductionYear());
-        movieRepository.save(movie1);
+        Movie movie = new Movie(movieRequest.getName(), movieRequest.getProductionYear());
+        movieRepository.save(movie);
         logService.saveLog();
     }
 
